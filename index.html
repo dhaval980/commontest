@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Placement Example</title>
+    
+    <!-- https://jiogames.akamaized.net/gameSDK/jiogames/V1.2/jiogames_sdk.js -->
+    <script async 
+        src="./JioGamesAds/jiogames_sdk.js"
+        crossorigin="anonymous">
+    </script>
+
+    <!-- com.jiogames.testms
+    p7kj62ow
+    tr21eo3l -->
+
+    <style>
+        /* Centering the button container */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button" onclick="cacheAd()">Cache Ad</button>
+        <button class="button" onclick="showAd()">Show Ad</button>
+        <button class="button" onclick="cacheAdRewarded()">Cache Rewarded Ad</button>
+        <button class="button" onclick="showAdRewarded()">Show Rewarded Ad</button>
+    </div>
+
+    <script>
+        function onSdkReady() {
+            console.log('index : The SDK is ready to use! ' + Date.now());
+        }
+
+        window.onBannerReady = function() {
+            console.log('index : The Banner is ready to use! ' + Date.now());
+
+            JGBanner.loadBanner().then(function() {
+                console.log('index : Banner loaded successfully.');
+                JGBanner.showBanner();
+            }).catch(function(error) {
+                console.log('index : Failed to load Banner: ' + error);
+            });
+        }
+
+        function cacheAd() {
+            JioGames.cacheAd(AdType.Interstitial, {
+                onAdPrepared: function () {
+                    console.log("index : Interstitial Ad prepared successfully.");
+                },
+                onAdFailedToLoad: function (error) {
+                    console.log("index : Failed to load Interstitial Ad: " + error);
+                }
+            });
+        }
+
+        function showAd() {
+            JioGames.showAd(AdType.Interstitial, {
+                onAdClosed: function () {
+                    console.log("index : Interstitial Ad closed.");
+                },
+                onAdFailedToLoad: function (error) {
+                    console.log("index : Failed to load Interstitial Ad: " + error);
+                }
+            });
+        }
+
+        function cacheAdRewarded() {
+            JioGames.cacheAd(AdType.Rewarded, {
+                onAdPrepared: function () {
+                    console.log("index : Rewarded Ad prepared successfully.");
+                },
+                onAdFailedToLoad: function (error) {
+                    console.log("index : Failed to load Rewarded Ad: " + error);
+                }
+            });
+        }
+
+        function showAdRewarded() {
+            JioGames.showAd(AdType.Rewarded, {
+                onAdClosed: function (isRewardUser) {
+                    console.log("index : Rewarded Ad closed. : " + isRewardUser);
+                },
+                onAdFailedToLoad: function (error) {
+                    console.log("index : Failed to load Rewarded Ad: " + error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
